@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,17 +23,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfQ-Me-7f5" customClass="DragableLabelBaseView" customModule="DragableLabel" customModuleProvider="target">
-                                <rect key="frame" x="20" y="133" width="334" height="124"/>
+                                <rect key="frame" x="20" y="133" width="334" height="496"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="124" id="6lB-fl-BQf"/>
+                                    <constraint firstAttribute="height" constant="496" id="6lB-fl-BQf"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5J-H6-a0f">
+                                <rect key="frame" x="255" y="42" width="67" height="30"/>
+                                <color key="backgroundColor" red="0.94685214226234504" green="0.99282228946685791" blue="0.63311428002440828" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="IMf-Dd-siR"/>
+                                    <constraint firstAttribute="width" constant="67" id="IdJ-Td-0Hn"/>
+                                </constraints>
+                                <state key="normal" title="Reset"/>
+                                <connections>
+                                    <action selector="pushResetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hDL-1D-Rze"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syI-eo-IcX">
+                                <rect key="frame" x="47" y="42" width="81" height="31"/>
+                                <color key="backgroundColor" red="0.56209491304040093" green="0.99282228946685791" blue="0.67897973213377916" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="81" id="0MH-K9-j6f"/>
+                                    <constraint firstAttribute="height" constant="31" id="qJ5-yW-EFB"/>
+                                </constraints>
+                                <state key="normal" title="判定"/>
+                                <connections>
+                                    <action selector="pushJudgeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6RZ-Q2-erA"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.73486051009999998" green="0.92158644700000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="syI-eo-IcX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="22" id="7HK-rX-hKU"/>
                             <constraint firstItem="bfQ-Me-7f5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="113" id="OEK-GA-vzg"/>
+                            <constraint firstItem="b5J-H6-a0f" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="22" id="QSu-ps-94V"/>
+                            <constraint firstItem="syI-eo-IcX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="47" id="aEA-NO-e6x"/>
                             <constraint firstAttribute="trailing" secondItem="bfQ-Me-7f5" secondAttribute="trailing" constant="21" id="cVZ-zb-gae"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="b5J-H6-a0f" secondAttribute="trailing" constant="37" id="s1S-lg-tTq"/>
                             <constraint firstItem="bfQ-Me-7f5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="wBk-Tj-ytL"/>
                         </constraints>
                     </view>
