@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var baseView: DragableLabelBaseView!
     
-    let words = ["Swift!", "iPhone", "Apple", "Xcode", "Objective-C", "WatchOS", "iPadmini", "iOS", "MacbookPro", "LLVM", "AppleWatch", "Macbook"]
+    let words = ["Swift!", "iPhone", "Apple", "Xcode", "Objective-C", "WatchOS"] //, "iPadmini", "iOS", "MacbookPro", "LLVM", "AppleWatch", "Macbook"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     
     @IBAction func pushJudgeButton(_ sender: UIButton) {
         
-        
+        baseView.checkAnswer()
     }
 }
 
@@ -72,6 +72,16 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
             if wordArray.isEmpty {
                 
                 self.wordArray = words.enumerated().map {
+                    let sortWord = SortWord(text: $0.element)
+                    sortWord.isAnswerFlg = false
+                    sortWord.index = $0.offset
+                    return sortWord
+                }
+            }
+            
+            if answerArray.isEmpty {
+                
+                self.answerArray = words.enumerated().map {
                     let sortWord = SortWord(text: $0.element)
                     sortWord.isAnswerFlg = false
                     sortWord.index = $0.offset
@@ -215,6 +225,8 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
     
     func labelMoveEnded(sortWord: SortWord, changedLabel: DragableLabel) {
     
+        sortWord.isCorrectAnswer = true
+        changedLabel.sortWord.isCorrectAnswer = true
         
         let tmp = myAnswerArray[changedLabel.sortWord.index].copy()
         
@@ -228,7 +240,9 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
             copySortWord.text = sortWord.text
             myAnswerArray[changedLabel.sortWord.index] = copySortWord
             
-            myAnswerArray[sortWord.index] = tmp
+            if sortWord.isAnswerFlg {
+                myAnswerArray[sortWord.index] = tmp
+            }
             
         } else {
             
@@ -241,29 +255,27 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
         
         setUpLabel()
     }
+    
+    func checkAnswer() {
+        
+        for answer in answerArray.enumerated() {
+            for myAnswer in myAnswerArray.enumerated() {
+                
+                if answer.offset == myAnswer.offset {
+                    
+                    if answer.element.text == myAnswer.element.text {
+                        myAnswer.element.isCorrectAnswer = true
+                    } else {
+                        myAnswer.element.isCorrectAnswer = false
+                    }
+                }
+            }
+        }
+        
+        setUpLabel()
+    }
 }
 
-class SortWord {
-    
-    var text: String!
-    var index: Int = 0
-    
-    // 
-    var isAnswerFlg: Bool = false
-    var isAlreadyAnswer: Bool = false
-    
-    init(text: String) {
-        self.text = text
-    }
-    
-    func copy() -> SortWord {
-        let sortWord = SortWord(text: self.text)
-        sortWord.index = self.index
-        sortWord.isAnswerFlg = self.isAnswerFlg
-        sortWord.isAlreadyAnswer = self.isAlreadyAnswer
-        return sortWord
-    }
-}
 
 
 
@@ -357,6 +369,16 @@ class DragableLabel: UILabel {
         
         if sortWord.isAnswerFlg {
             
+            if !sortWord.isCorrectAnswer {
+                if sortWord.isAlreadyAnswer {
+                    
+                    failedAnswerLabel(label: self)
+                } else {
+                    failedNoAnswerLabel(label: self)
+                }
+                return
+            }
+            
             if sortWord.isAlreadyAnswer {
                 
                 answerLabel(label: self)
@@ -370,6 +392,27 @@ class DragableLabel: UILabel {
             
             defaultSetting(label: self)
         }
+    }
+    
+    func failedAnswerLabel(label: UILabel) {
+        
+        label.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        label.text = self.text
+        label.textAlignment = .center
+        label.layer.cornerRadius = 5.0
+        label.layer.masksToBounds = true
+    }
+    
+    func failedNoAnswerLabel(label: UILabel) {
+        
+        label.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        label.text = self.text
+        label.textAlignment = .center
+        label.layer.cornerRadius = 5.0
+        label.layer.masksToBounds = true
+        label.addDashedBorder(boarderColor: .red)
     }
     
     func noAnswerLabel(label: UILabel) {
@@ -412,6 +455,8 @@ class DragableLabel: UILabel {
         guard sortWord.text != "   " else {
             return
         }
+        
+        sortWord.isCorrectAnswer = false
         
         if let touchEvent = touches.first  {
             
@@ -540,6 +585,35 @@ class DragableLabel: UILabel {
         }
     }
 }
+
+
+// MARK: - Class SortWord
+
+class SortWord {
+    
+    var text: String!
+    var index: Int = 0
+    var isCorrectAnswer = true
+    
+    //
+    var isAnswerFlg: Bool = false
+    var isAlreadyAnswer: Bool = false
+    
+    init(text: String) {
+        self.text = text
+    }
+    
+    func copy() -> SortWord {
+        let sortWord = SortWord(text: self.text)
+        sortWord.index = self.index
+        sortWord.isAnswerFlg = self.isAnswerFlg
+        sortWord.isAlreadyAnswer = self.isAlreadyAnswer
+        return sortWord
+    }
+}
+
+
+// MARK: - extension
 
 extension UIView {
     
