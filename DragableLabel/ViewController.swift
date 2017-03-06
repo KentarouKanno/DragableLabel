@@ -133,6 +133,10 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
             answerLastLabelEndPoint_X = label.x + label.width + labelMargin
         }
         
+        let lineView = UIView(frame: CGRect(x: 10, y: answerLastLabelEndPoint_Y + 60, width: self.width - 20, height: 1))
+        lineView.backgroundColor = .white
+        self.addSubview(lineView)
+        
         
         var lastLabelEndPoint_X: CGFloat = 0
         var lastLabelEndPoint_Y: CGFloat = answerLastLabelEndPoint_Y + 100
