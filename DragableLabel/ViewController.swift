@@ -155,8 +155,6 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
                 lastLabelEndPoint_Y = label.y
             }
             
-            //
-            
             self.addSubview(label)
             lastLabelEndPoint_X = label.x + label.width + labelMargin
         }
@@ -250,11 +248,35 @@ class DragableLabelBaseView: UIView, DragableLabelDelegate {
             
         } else {
             
-            sortWord.isAlreadyAnswer = true
-            tmp.isAlreadyAnswer = true
-            
-            myAnswerArray[sortWord.index] = tmp
-            myAnswerArray[changedLabel.sortWord.index] = sortWord
+            if tmp.isAnswerFlg && !sortWord.isAnswerFlg {
+                
+                wordArray = wordArray.map{
+                    if $0.text == tmp.text {
+                        $0.isAnswerFlg = false
+                        $0.isAlreadyAnswer = false
+                    }
+                    
+                    if $0.text == sortWord.text {
+                        $0.isAnswerFlg = false
+                        $0.isAlreadyAnswer = true
+                    }
+
+                    return $0
+                }
+                
+                let so = sortWord.copy()
+                so.isAnswerFlg = true
+                so.isAlreadyAnswer = true
+                myAnswerArray[changedLabel.sortWord.index] = so
+                
+            } else {
+                
+                sortWord.isAlreadyAnswer = true
+                tmp.isAlreadyAnswer = true
+                
+                myAnswerArray[sortWord.index] = tmp
+                myAnswerArray[changedLabel.sortWord.index] = sortWord
+            }
         }
         
         setUpLabel()
